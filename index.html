@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>Kaskus emoticon</title>
+        <style type="text/css">
+            #kaskus_emot{cursor:pointer;margin-top:20px}
+            #show_emot{display:none;}
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            var emot = 0;
+            $(document).ready(function(){
+                $('#kaskus_emot').live('click',function(e){                 
+                    if(emot == 0){
+                        emot = '1';
+                        $(this).text("[-] Emoticons").show(); // ubah menjadi  [-] Emoticons pada klik pertama
+                        $.post("emoticons.php",{show:'true'}, function(data){ 
+                            $("#show_emot").html(data).slideDown(); // tampilkan emoticon yang ada
+                        });
+                    }else{
+                        emot = '0';
+                        $(this).text("[+] Emoticons").show(); // ubah menjadi  [+] Emoticons pada klik kedua
+                        $("#show_emot").slideUp();
+                    }
+                });
+                
+                $('#show_emot #view').live('click',function(){ // ketika image di klik
+                    var emot, komen, hasil;
+                    
+                    emot = $(this).attr('title'); // variabel yg menampung value images yg di klik
+                    komen = $("#komentar").val(); // variabel yg menampung isi dari textarea
+                    hasil = komen +" "+ emot; // gabungkan value yg ada di komentar dengan  haisl klik
+                    
+                    $("#komentar").val(hasil); // masukkan hasilnya di textarea
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <table width="50%">
+            <tr>
+                <td>Nama :</td>
+                <td><input type="text" name="nama" id="nama" /></td>
+            </tr>
+            <tr>
+                <td valign="top">Komentar :</td>
+                <td><textarea name="komentar" id="komentar" rows="5" cols="50"></textarea></td>
+            </tr>
+            <tr>
+                <td><input type="submit" name="submit" value="Kirim" /></td>
+            </tr>
+        </table>
+        <div id="kaskus_emot">[+] Emoticons</div>
+        <div id="show_emot"></div>
+    </body>
+</html>
